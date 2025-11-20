@@ -77,49 +77,6 @@ class CircuitWireDrawerGUI:
         )
         self.select_btn.pack(side=tk.LEFT, padx=5)
         
-        # Wire Style
-        tk.Label(control_frame, text="Wire Style:", bg="#2c3e50", fg="white", font=("Arial", 9)).pack(side=tk.LEFT, padx=(20, 5))
-        
-        style_frame = tk.Frame(control_frame, bg="#2c3e50")
-        style_frame.pack(side=tk.LEFT)
-        
-        tk.Radiobutton(
-            style_frame, 
-            text="Orthogonal", 
-            variable=self.wire_style, 
-            value="orthogonal",
-            bg="#2c3e50",
-            fg="white",
-            selectcolor="#34495e",
-            font=("Arial", 9),
-            command=self.on_wire_style_change
-        ).pack(side=tk.LEFT)
-        
-        tk.Radiobutton(
-            style_frame, 
-            text="Straight", 
-            variable=self.wire_style, 
-            value="straight",
-            bg="#2c3e50",
-            fg="white",
-            selectcolor="#34495e",
-            font=("Arial", 9),
-            command=self.on_wire_style_change
-        ).pack(side=tk.LEFT)
-        
-        # Only show Smart option if dependencies available
-        if SMART_ROUTING_AVAILABLE:
-            tk.Radiobutton(
-                style_frame, 
-                text="Smart", 
-                variable=self.wire_style, 
-                value="smart",
-                bg="#2c3e50",
-                fg="white",
-                selectcolor="#34495e",
-                font=("Arial", 9)
-            ).pack(side=tk.LEFT)
-        
         # Color Selection
         tk.Label(control_frame, text="Color:", bg="#2c3e50", fg="white", font=("Arial", 9)).pack(side=tk.LEFT, padx=(20, 5))
         
@@ -159,63 +116,6 @@ class CircuitWireDrawerGUI:
             pady=5
         )
         self.undo_btn.pack(side=tk.LEFT, padx=(20, 5))
-        
-        # Smart Routing Controls (only if dependencies available)
-        if SMART_ROUTING_AVAILABLE:
-            smart_frame = tk.Frame(control_frame, bg="#2c3e50")
-            smart_frame.pack(side=tk.LEFT, padx=(20, 5))
-            
-            tk.Label(smart_frame, text="Smart Routing:", bg="#2c3e50", fg="white", font=("Arial", 9)).pack(side=tk.TOP)
-            
-            self.analyze_btn = tk.Button(
-                smart_frame,
-                text="🔍 Analyze",
-                command=self.analyze_circuit,
-                bg="#8e44ad",
-                fg="white",
-                font=("Arial", 8, "bold"),
-                padx=8,
-                pady=2
-            )
-            self.analyze_btn.pack(side=tk.LEFT, padx=2)
-            
-            # Toggle button to show/hide obstacles
-            self.toggle_obstacles_btn = tk.Checkbutton(
-                smart_frame,
-                text="Show Components",
-                variable=self.show_obstacles,
-                command=self.toggle_obstacle_view,
-                bg="#2c3e50",
-                fg="white",
-                selectcolor="#34495e",
-                font=("Arial", 8)
-            )
-            self.toggle_obstacles_btn.pack(side=tk.LEFT, padx=2)
-            
-            routing_style_frame = tk.Frame(smart_frame, bg="#2c3e50")
-            routing_style_frame.pack(side=tk.LEFT, padx=5)
-            
-            tk.Radiobutton(
-                routing_style_frame,
-                text="Manhattan",
-                variable=self.routing_style,
-                value="manhattan",
-                bg="#2c3e50",
-                fg="white",
-                selectcolor="#34495e",
-                font=("Arial", 8)
-            ).pack(side=tk.TOP)
-            
-            tk.Radiobutton(
-                routing_style_frame,
-                text="A*",
-                variable=self.routing_style,
-                value="astar",
-                bg="#2c3e50",
-                fg="white",
-                selectcolor="#34495e",
-                font=("Arial", 8)
-            ).pack(side=tk.TOP)
         
         # Clear Button
         self.clear_btn = tk.Button(
