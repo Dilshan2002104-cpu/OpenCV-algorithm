@@ -38,8 +38,8 @@ class PathFinder:
             x, y = pos
             neighbors = []
             
-            # 8-directional movement (can be changed to 4-directional for simpler routing)
-            directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+            # 4-directional movement (orthogonal only - no diagonals for standard circuit diagrams)
+            directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]  # Up, Down, Left, Right
             
             for dx, dy in directions:
                 nx, ny = x + dx, y + dy
@@ -73,10 +73,8 @@ class PathFinder:
                 return path[::-1]
             
             for neighbor in get_neighbors(current):
-                # Calculate cost (diagonal moves cost more)
-                dx = abs(neighbor[0] - current[0])
-                dy = abs(neighbor[1] - current[1])
-                move_cost = 1.4 if dx + dy == 2 else 1.0  # Diagonal vs straight
+                # All moves are orthogonal with equal cost
+                move_cost = 1.0
                 
                 tentative_g_score = g_score[current] + move_cost
                 

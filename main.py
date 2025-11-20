@@ -551,17 +551,30 @@ class CircuitWireDrawerGUI:
             img_width, img_height = self.image.size
             
             if style == "smart" and wire_path:
-                # Draw smart routed path
+                # Draw smart routed path with strictly orthogonal lines (circuit diagram style)
                 for i in range(len(wire_path) - 1):
                     # Scale coordinates
-                    scaled_pt1 = (int(wire_path[i][0] * self.zoom_factor), int(wire_path[i][1] * self.zoom_factor))
-                    scaled_pt2 = (int(wire_path[i+1][0] * self.zoom_factor), int(wire_path[i+1][1] * self.zoom_factor))
+                    x1, y1 = int(wire_path[i][0] * self.zoom_factor), int(wire_path[i][1] * self.zoom_factor)
+                    x2, y2 = int(wire_path[i+1][0] * self.zoom_factor), int(wire_path[i+1][1] * self.zoom_factor)
                     
                     # Ensure coordinates are within bounds
-                    scaled_pt1 = (max(0, min(scaled_pt1[0], img_width-1)), max(0, min(scaled_pt1[1], img_height-1)))
-                    scaled_pt2 = (max(0, min(scaled_pt2[0], img_width-1)), max(0, min(scaled_pt2[1], img_height-1)))
+                    x1 = max(0, min(x1, img_width-1))
+                    y1 = max(0, min(y1, img_height-1))
+                    x2 = max(0, min(x2, img_width-1))
+                    y2 = max(0, min(y2, img_height-1))
                     
-                    draw.line([scaled_pt1, scaled_pt2], fill=color, width=scaled_thickness)
+                    # Draw orthogonal lines only (horizontal OR vertical, never diagonal)
+                    if x1 == x2 or y1 == y2:
+                        # Already orthogonal (vertical or horizontal)
+                        draw.line([(x1, y1), (x2, y2)], fill=color, width=scaled_thickness)
+                    else:
+                        # Force orthogonal by breaking into two segments
+                        # Go horizontal first, then vertical
+                        mid_x, mid_y = x2, y1
+                        mid_x = max(0, min(mid_x, img_width-1))
+                        mid_y = max(0, min(mid_y, img_height-1))
+                        draw.line([(x1, y1), (mid_x, mid_y)], fill=color, width=scaled_thickness)
+                        draw.line([(mid_x, mid_y), (x2, y2)], fill=color, width=scaled_thickness)
             else:
                 # Traditional routing
                 scaled_pt1 = (int(pt1[0] * self.zoom_factor), int(pt1[1] * self.zoom_factor))
