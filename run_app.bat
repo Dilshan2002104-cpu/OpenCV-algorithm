@@ -1,0 +1,6 @@
+@echo off
+echo Activating circuit environment...
+call conda activate circuit
+echo Starting Circuit Wire Drawing Tool...
+python main.py
+pause
