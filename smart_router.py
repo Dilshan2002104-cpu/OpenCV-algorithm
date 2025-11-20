@@ -7,7 +7,6 @@ Now uses GENERIC OBSTACLE DETECTION (works with hand-drawn circuits!)
 import numpy as np
 import cv2
 from typing import List, Tuple, Optional
-from symbol_detector import CircuitSymbolDetector
 from generic_obstacle_detector import GenericObstacleDetector
 from pathfinding import PathFinder, ObstacleMapGenerator
 
@@ -17,16 +16,10 @@ class SmartWireRouter:
         Initialize smart wire router
         
         Args:
-            use_generic_detection: If True, uses generic obstacle detection (better for hand-drawn)
-                                  If False, uses symbol detection (better for standard schematics)
+            use_generic_detection: Uses generic obstacle detection (works with hand-drawn circuits)
         """
         self.use_generic_detection = use_generic_detection
-        
-        if use_generic_detection:
-            self.obstacle_detector = GenericObstacleDetector()
-        else:
-            self.symbol_detector = CircuitSymbolDetector()
-        
+        self.obstacle_detector = GenericObstacleDetector()
         self.current_obstacle_map = None
         self.current_symbols = {}
         
